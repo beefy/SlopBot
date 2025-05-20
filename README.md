@@ -1,0 +1,2 @@
+# SlopBot
+Generate AI content
