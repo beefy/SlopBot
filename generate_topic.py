@@ -1,21 +1,25 @@
-from google.generativeai.agent import Agent
-from google.generativeai.chat_models import ChatModel
-from google.generativeai.types import TextPrompt
+import os
+from google import genai
 
 
-class TopicAgent(Agent):
-
-    def init(self, model=None):
-        super().init()
-        self.model = model or ChatModel(model="gemini-pro")
+class TopicAgent:
+    def __init__(self, model=None):
+        api_key = os.environ.get("GOOGLE_API_KEY")
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable not set.")
+        self.client = genai.Client(api_key=api_key)
+        self.model = model or "gemini-2.0-flash-001"
 
     def generate_prompt(self, topic: str, tone: str = "suspenseful") -> str:
-        user_prompt = "Generate 3 engaging TikTok-style storytelling topics."
-        response = self.model.chat(TextPrompt(user_prompt))
+        user_prompt = f"Generate 3 engaging TikTok-style storytelling topics about {topic} in a {tone} tone."
+        response = self.client.models.generate_content(
+            model=self.model,
+            contents=user_prompt,
+        )
         return response.text
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     agent = TopicAgent()
     prompts = agent.generate_prompt("urban legends")
     print(prompts)
