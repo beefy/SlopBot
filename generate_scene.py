@@ -7,6 +7,7 @@ class SceneAgent:
         self.api_key = api_key or os.environ.get("RUNWAY_API_KEY")
         if not self.api_key:
             raise ValueError("RUNWAY_API_KEY environment variable not set.")
+
         self.api_url = (
             "https://api.runwayml.com/v1/generate"
         )  # RunwayML Gen-2 endpoint

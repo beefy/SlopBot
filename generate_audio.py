@@ -5,8 +5,9 @@ from google.cloud import texttospeech
 class AudioAgent:
     def __init__(self, gcp_project=None):
         self.gcp_project = gcp_project or os.environ.get("GOOGLE_CLOUD_PROJECT")
-        if not self.gemini_api_key or not self.gcp_project:
-            raise ValueError("Set GEMINI_API_KEY and GOOGLE_CLOUD_PROJECT env vars.")
+        if not self.gcp_project:
+            raise ValueError("Set GOOGLE_CLOUD_PROJECT env var.")
+
         self.tts_client = texttospeech.TextToSpeechClient()
 
     def generate_audio(self, text, output_path="output_audio.mp3"):
